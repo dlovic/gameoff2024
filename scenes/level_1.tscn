@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://xggf6mewj22f" path="res://scenes/map.tscn" id="1_uekb8"]
 [ext_resource type="Texture2D" uid="uid://bfg3i1cpqvvsd" path="res://images/prototype-block.png" id="2_fjblm"]
-[ext_resource type="Shader" path="res://scenes/game.gdshader" id="3_kx1oe"]
+[ext_resource type="Shader" path="res://shaders/game.gdshader" id="3_kx1oe"]
 [ext_resource type="Script" path="res://scripts/parallax_map.gd" id="4_f2ece"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v0dr4"]
