@@ -3,13 +3,14 @@ extends CharacterBody2D
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var coyote_timer = $CoyoteTimer
 
+@export_group("Player movement")
 @export var SPEED = 300.0
 @export var JUMP_VELOCITY = -400.0
-@export var NUMBER_OF_JUMPS: int = 1
+@export var NUMBER_OF_EXTRA_JUMPS: int = 1
 @export var COYOTE_FRAMES: int = 6
 
 var jumping = true
-var number_of_jumps_left = NUMBER_OF_JUMPS	
+var number_of_jumps_left = NUMBER_OF_EXTRA_JUMPS	
 
 var coyote = false
 var last_floor = false
@@ -18,6 +19,9 @@ func _ready() -> void:
 	coyote_timer.wait_time = COYOTE_FRAMES / float(Engine.physics_ticks_per_second)
 
 func _physics_process(delta: float) -> void:
+	if get_parent().generation_mode:
+		return
+	
 	if !is_on_floor() and last_floor and !jumping:
 		coyote = true
 		coyote_timer.start()
@@ -33,8 +37,9 @@ func _physics_process(delta: float) -> void:
 
 	# Handle jump.
 	if is_on_floor():
-		number_of_jumps_left = NUMBER_OF_JUMPS;
+		number_of_jumps_left = NUMBER_OF_EXTRA_JUMPS;
 		jumping = false
+		coyote_timer.stop()
 	
 	if Input.is_action_just_pressed("jump") and (is_on_floor() or number_of_jumps_left > 0 or coyote):
 		velocity.y = JUMP_VELOCITY
@@ -67,8 +72,8 @@ func _physics_process(delta: float) -> void:
 	else:
 		animated_sprite.play("jump")
 	
-	#TODO: this is naive, should probably move to game.gd instead
-	var bgMap = get_node("../Level/Map2");
+	#TODO: this is naive, should probably move to game.gd instead	
+	var bgMap = get_node("../Level/ParallaxMap");
 	
 	if bgMap != null:
 		bgMap.position = -0.1 * position

@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://b2jwyf2xj80rk"]
+[gd_scene load_steps=5 format=3 uid="uid://b2jwyf2xj80rk"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_6toes"]
+[ext_resource type="FontFile" uid="uid://iyv1a1gvh5k7" path="res://fonts/PressStart2P.ttf" id="3_1fky4"]
 [ext_resource type="PackedScene" uid="uid://c8xg03cmhwws8" path="res://scenes/player.tscn" id="3_7p0di"]
+
+[sub_resource type="Theme" id="Theme_y265l"]
+default_font = ExtResource("3_1fky4")
+default_font_size = 8
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_6toes")
@@ -11,3 +16,14 @@ levels_to_generate = 7
 position = Vector2(179, 51)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GenerationInformation" type="RichTextLabel" parent="CanvasLayer"]
+offset_right = 305.0
+offset_bottom = 73.0
+theme = SubResource("Theme_y265l")
+bbcode_enabled = true
+text = "Press \"Q\" to toggle generation mode
+Press \"R\" to generate level
+[color=\"green\"]GREEN[/color] is start, [color=\"blue\"]BLUE[/color] is end"

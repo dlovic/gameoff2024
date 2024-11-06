@@ -1,35 +1,61 @@
 extends Node2D
 
+@export_group("Generation settings")
+@export var generation_mode = false
 @export var levels_to_generate = 5
 @export var room_size = 32
 @export var room_gap = 4
 
-var levels = []
+var levels = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#var level = load("res://scenes/level_1.tscn") as PackedScene
-	#var level_instance = level.instantiate()
-	#level_instance.name = "Level";
-	#
-	#add_child(level_instance)
+	initialize()
+		
+func initialize() -> void:
+	queue_redraw()
 	
-	generate_levels()
-	$Player/Camera2D.enabled = false
-	
+	if generation_mode:
+		# generate levels and disable camera
+		generate_levels()
+		$Player/Camera2D.enabled = false
+		$Player.visible = false
+		
+		# Find and remove any existing level instance
+		var existing_level = get_node("Level")
+		if existing_level != null:
+			print("removing existing level...")
+			remove_child(existing_level)
+			existing_level.queue_free()  # Free the memory asynchronously
+		else:
+			print("no existing level found to remove.")
+	else:
+		# load and instantiate the predefined level scene
+		var level_scene = load("res://scenes/level_1.tscn") as PackedScene
+		if level_scene != null:
+			print("loading predefined level scene...")
+			var level_instance = level_scene.instantiate()
+			level_instance.name = "Level"
+			
+			$Player/Camera2D.enabled = true
+			$Player.visible = true
+			add_child(level_instance)
+		else:
+			print("error: level scene could not be loaded.")
 	
 func _physics_process(delta: float) -> void:
 	if (Input.is_action_just_pressed("debug_generate")):
 		generate_levels()
+		
+	if (Input.is_action_just_pressed("toggle_generation_mode")):
+		generation_mode = !generation_mode
+		initialize()
 	
 func generate_levels() -> void:
-	levels = []
-	
-	for i in range(1, levels_to_generate + 1):
-		print("level: ", i)
+	levels.clear()
 		
 	var current_position = Vector2i(0,0)
-	levels.append(current_position)
+	levels[current_position] = Level.new(current_position)
 		
 	while levels.size() < levels_to_generate:
 		var direction = Vector2i()
@@ -44,58 +70,53 @@ func generate_levels() -> void:
 		
 		current_position += direction
 		
-		if levels.find(current_position) == -1:
-			levels.append(current_position)
+		if not levels.has(current_position):
+			var new_level = Level.new(current_position)
+			levels[current_position] = new_level
+			
+			# connections
+			var previous_level: Level = levels[current_position - direction]
+			previous_level.add_connection(new_level.position)
+			new_level.add_connection(previous_level.position)
 	
-	print(levels)
+	print("generated levels", levels)
 	
 	queue_redraw()
 	pass
 
 func _draw() -> void:
-	for level in levels:
-		draw_room_connections(level)
-		draw_room(level)
+	if !generation_mode:
+		return
+	
+	for level: Level in levels.values():
+		draw_level(level.position)
 		
-	# TODO: quickfix, redraw first and last room
-	draw_room(levels[0])
-	draw_room(levels[levels.size() - 1])
+		for connection in level.connections:
+			draw_level_connection(level.position, connection)
+			
+	# draw start and end on top of connections
+	draw_level(levels.keys()[0], Color.GREEN)
+	draw_level(levels.keys()[-1], Color.BLUE)
 
-func draw_room(position: Vector2i) -> void:
+func draw_level(position: Vector2i, color = Color.WHITE) -> void:
 	var center_offset = get_viewport_rect().size / 2
 	
 	# Calculate screen position, accounting for room size and gap
 	var screen_position = Vector2i(center_offset) + (position * (room_size + room_gap))
 	var rect = Rect2i(screen_position, Vector2i(room_size, room_size))
-	var color = Color.WHITE
-	
-	var level_position = levels.find(position);
-	
-	if level_position == 0:
-		color = Color.GREEN
-	elif level_position == levels.size() - 1:
-		color = Color.BLUE
 	
 	draw_rect(rect, color)
 
 	pass
 	
-func draw_room_connections(position: Vector2i) -> void:
+func draw_level_connection(from_position: Vector2i, to_position: Vector2i) -> void:
 	var center_offset = Vector2i(get_viewport_rect().size / 2)
-	var cardinal_directions = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+	var from_screen_position = center_offset + (from_position * (room_size + room_gap)) + Vector2i(room_size / 2, room_size / 2)
+	var to_screen_position = center_offset + (to_position * (room_size + room_gap)) + Vector2i(room_size / 2, room_size / 2)
 	
-	for direction in cardinal_directions:
-		var neighbour_position = position + direction
-		
-		if levels.has(neighbour_position):
-			var from_screen_position = center_offset + (position * (room_size + room_gap)) + Vector2i(room_size / 2, room_size / 2)
-			var to_screen_position = center_offset + (neighbour_position * (room_size + room_gap)) + Vector2i(room_size / 2, room_size / 2)	
-	
-			draw_line(from_screen_position, to_screen_position, Color.WHITE, 4)
+	draw_line(from_screen_position, to_screen_position, Color.WHITE, 4)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
-
 	pass # Replace with function body.
