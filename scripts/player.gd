@@ -60,8 +60,16 @@ func _physics_process(delta: float) -> void:
 	
 	if direction:
 		velocity.x = direction * SPEED
+		$TrailParticles.emitting = true
+		if is_on_floor():
+			$DustParticles.emitting = true
+		else:
+			$DustParticles.emitting = false
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
+		$TrailParticles.emitting = false
+		$DustParticles.emitting = false
+		
 	
 	# play animations
 	if is_on_floor():

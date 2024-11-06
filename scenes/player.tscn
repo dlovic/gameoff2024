@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://c8xg03cmhwws8"]
+[gd_scene load_steps=21 format=3 uid="uid://c8xg03cmhwws8"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_e81al"]
 [ext_resource type="Texture2D" uid="uid://bqk82fuc3jjis" path="res://images/prototype-player-v2.png" id="2_x2qng"]
+[ext_resource type="Texture2D" uid="uid://cljxakdhp3b0h" path="res://images/particle.png" id="3_cxnaa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1s628"]
 atlas = ExtResource("2_x2qng")
@@ -87,6 +88,52 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_kbjsp"]
 radius = 5.0
 
+[sub_resource type="Gradient" id="Gradient_fi6gi"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.372549, 0.780392, 0.364706, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o1t2s"]
+gradient = SubResource("Gradient_fi6gi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8nosk"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(3, 8, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+angle_min = -171.4
+angle_max = 154.3
+inherit_velocity_ratio = 0.059
+gravity = Vector3(0, 10, 0)
+radial_accel_min = -40.47
+radial_accel_max = 40.48
+scale_min = 0.0
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_o1t2s")
+
+[sub_resource type="Gradient" id="Gradient_gidpw"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.211765, 0.52549, 0.560784, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lc0ds"]
+gradient = SubResource("Gradient_gidpw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qndvi"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(3, 3, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_min = -96.0
+angle_max = 144.0
+gravity = Vector3(0, -50, 0)
+radial_accel_min = -28.57
+radial_accel_max = 23.81
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_lc0ds")
+turbulence_enabled = true
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.0
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_e81al")
 NUMBER_OF_EXTRA_JUMPS = 0
@@ -103,5 +150,21 @@ shape = SubResource("CircleShape2D_kbjsp")
 [node name="CoyoteTimer" type="Timer" parent="."]
 process_callback = 0
 one_shot = true
+
+[node name="TrailParticles" type="GPUParticles2D" parent="."]
+z_index = -1
+position = Vector2(0, 4)
+amount = 40
+process_material = SubResource("ParticleProcessMaterial_8nosk")
+texture = ExtResource("3_cxnaa")
+trail_section_subdivisions = 1
+
+[node name="DustParticles" type="GPUParticles2D" parent="."]
+z_index = -1
+position = Vector2(0, 12)
+amount = 25
+process_material = SubResource("ParticleProcessMaterial_qndvi")
+texture = ExtResource("3_cxnaa")
+lifetime = 0.5
 
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
