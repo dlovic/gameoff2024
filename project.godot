@@ -27,6 +27,10 @@ window/stretch/scale_mode="integer"
 
 project/assembly_name="gameoff2024"
 
+[global_group]
+
+Game=""
+
 [input]
 
 move_left={

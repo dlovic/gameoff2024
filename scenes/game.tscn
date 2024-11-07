@@ -8,7 +8,7 @@
 default_font = ExtResource("3_1fky4")
 default_font_size = 8
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" groups=["Game"]]
 script = ExtResource("1_6toes")
 levels_to_generate = 7
 

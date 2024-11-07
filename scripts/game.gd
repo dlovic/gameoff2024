@@ -30,8 +30,9 @@ func initialize() -> void:
 		else:
 			print("no existing level found to remove.")
 	else:
+		# TODO: handle prefab levels here
 		# load and instantiate the predefined level scene
-		var level_scene = load("res://scenes/level_1.tscn") as PackedScene
+		var level_scene = load("res://scenes/levels/level_test.tscn") as PackedScene
 		if level_scene != null:
 			print("loading predefined level scene...")
 			var level_instance = level_scene.instantiate()
@@ -39,15 +40,16 @@ func initialize() -> void:
 			
 			$Player/Camera2D.enabled = true
 			$Player.visible = true
+			
 			add_child(level_instance)
 		else:
 			print("error: level scene could not be loaded.")
 	
 func _physics_process(delta: float) -> void:
-	if (Input.is_action_just_pressed("debug_generate")):
+	if Input.is_action_just_pressed("debug_generate") and generation_mode:
 		generate_levels()
 		
-	if (Input.is_action_just_pressed("toggle_generation_mode")):
+	if Input.is_action_just_pressed("toggle_generation_mode"):
 		generation_mode = !generation_mode
 		initialize()
 	
