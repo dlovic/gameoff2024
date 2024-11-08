@@ -1,10 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2jwyf2xj80rk"]
+[gd_scene load_steps=6 format=3 uid="uid://b2jwyf2xj80rk"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_6toes"]
 [ext_resource type="FontFile" uid="uid://iyv1a1gvh5k7" path="res://fonts/PressStart2P.ttf" id="3_1fky4"]
 [ext_resource type="PackedScene" uid="uid://c8xg03cmhwws8" path="res://scenes/player.tscn" id="3_7p0di"]
 
 [sub_resource type="Theme" id="Theme_y265l"]
+default_font = ExtResource("3_1fky4")
+default_font_size = 8
+
+[sub_resource type="Theme" id="Theme_qdtjb"]
 default_font = ExtResource("3_1fky4")
 default_font_size = 8
 
@@ -27,3 +31,14 @@ bbcode_enabled = true
 text = "Press \"Q\" to toggle generation mode
 Press \"R\" to generate level
 [color=\"green\"]GREEN[/color] is start, [color=\"blue\"]BLUE[/color] is end"
+
+[node name="SeedLineEdit" type="LineEdit" parent="CanvasLayer"]
+offset_left = 1.0
+offset_top = 27.0
+offset_right = 68.0
+offset_bottom = 43.0
+theme = SubResource("Theme_qdtjb")
+placeholder_text = "1337"
+select_all_on_focus = true
+
+[connection signal="text_submitted" from="CanvasLayer/SeedLineEdit" to="." method="_on_seed_line_edit_text_submitted"]

@@ -5,6 +5,7 @@ extends Node2D
 @export var levels_to_generate = 5
 @export var room_size = 32
 @export var room_gap = 4
+@export var seed: int = 1337
 
 var levels = {}
 
@@ -45,6 +46,7 @@ func load_level() -> void:
 
 func initialize() -> void:
 	queue_redraw()
+	$CanvasLayer/SeedLineEdit.text = String.num_int64(seed)
 	
 	if generation_mode:
 		# generate levels and disable camera
@@ -67,58 +69,61 @@ func _physics_process(delta: float) -> void:
 		generation_mode = !generation_mode
 		initialize()
 		
-	var map = $Level/Map as TileMapLayer
-	var player = $Player as CharacterBody2D
-	
-	if !generation_mode and map != null and player != null:
-		# Get the TileMap's used rectangle and tile size
-		var used_rect = map.get_used_rect()
-		var tile_size = map.tile_set.tile_size  # Size of each tile
-
-		# Calculate map boundaries
-		var map_left = map.to_global(used_rect.position * tile_size).x
-		var map_top = map.to_global(used_rect.position * tile_size).y
-		var map_right = map_left + used_rect.size.x * tile_size.x
-		var map_bottom = map_top + used_rect.size.y * tile_size.y
-
-		# Debug print to verify boundaries
-		# print("Map boundaries -> Left:", map_left, "Right:", map_right, "Top:", map_top, "Bottom:", map_bottom)
-
-		# Check the player's position in relation to the boundaries
-		var player_position = player.global_position
-		var outside_direction = ""
-
-		if player_position.x < map_left:
-			outside_direction += "left"
-		elif player_position.x > map_right:
-			outside_direction += "right"
+	if !generation_mode:
+		var map = $Level/Map as TileMapLayer
+		var player = $Player as CharacterBody2D
 		
-		if player_position.y < map_top:
-			outside_direction += "top"
-		elif player_position.y > map_bottom:
-			outside_direction += "bottom"
+		if map != null and player != null:
+			# Get the TileMap's used rectangle and tile size
+			var used_rect = map.get_used_rect()
+			var tile_size = map.tile_set.tile_size  # Size of each tile
 
-		# Check if player is outside and print the direction
-		if outside_direction != "":
-			print("Player is outside the map on:", outside_direction, "at position:", player_position)
+			# Calculate map boundaries
+			var map_left = map.to_global(used_rect.position * tile_size).x
+			var map_top = map.to_global(used_rect.position * tile_size).y
+			var map_right = map_left + used_rect.size.x * tile_size.x
+			var map_bottom = map_top + used_rect.size.y * tile_size.y
+
+			# Debug print to verify boundaries
+			# print("Map boundaries -> Left:", map_left, "Right:", map_right, "Top:", map_top, "Bottom:", map_bottom)
+
+			# Check the player's position in relation to the boundaries
+			var player_position = player.global_position
+			var outside_direction = ""
+
+			if player_position.x < map_left:
+				outside_direction += "left"
+			elif player_position.x > map_right:
+				outside_direction += "right"
 			
-			if outside_direction == "top":
-				current_level += Vector2i.UP
-			elif outside_direction == "bottom":
-				current_level += Vector2i.DOWN
-			elif outside_direction == "right":
-				current_level += Vector2i.RIGHT
-			elif outside_direction == "left":
-				current_level += Vector2i.LEFT
+			if player_position.y < map_top:
+				outside_direction += "top"
+			elif player_position.y > map_bottom:
+				outside_direction += "bottom"
+
+			# Check if player is outside and print the direction
+			if outside_direction != "":
+				print("Player is outside the map on:", outside_direction, "at position:", player_position)
 				
-			unload_existing_level()
-			load_level()
-			
-		#else:
-			#print("Player is inside the map boundaries at position:", player_position)
+				if outside_direction == "top":
+					current_level += Vector2i.UP
+				elif outside_direction == "bottom":
+					current_level += Vector2i.DOWN
+				elif outside_direction == "right":
+					current_level += Vector2i.RIGHT
+				elif outside_direction == "left":
+					current_level += Vector2i.LEFT
+					
+				unload_existing_level()
+				load_level()
+				
+			#else:
+				#print("Player is inside the map boundaries at position:", player_position)
 	
 func generate_levels() -> void:
 	levels.clear()
+	var rng = RandomNumberGenerator.new()
+	rng.seed = seed
 		
 	var current_position = Vector2i(0,0)
 	levels[current_position] = Level.new(current_position)
@@ -127,12 +132,12 @@ func generate_levels() -> void:
 		var direction = Vector2i()
 		
 		# horizontal or vertical
-		if randi_range(0, 1) == 0:
-			direction.x = randi_range(-1, 1)
+		if rng.randi_range(0, 1) == 0:
+			direction.x = rng.randi_range(-1, 1)
 			direction.y = 0
 		else:
 			direction.x = 0
-			direction.y = randi_range(-1, 1)
+			direction.y = rng.randi_range(-1, 1)
 		
 		current_position += direction
 		
@@ -224,4 +229,10 @@ func draw_level_connection(from_position: Vector2i, to_position: Vector2i) -> vo
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	pass # Replace with function body.
+	
+func _on_seed_line_edit_text_submitted(new_text: String) -> void:
+	seed = int(new_text)
+	$CanvasLayer/SeedLineEdit.release_focus()
+	generate_levels()
 	pass # Replace with function body.
