@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://b2jwyf2xj80rk"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_6toes"]
-[ext_resource type="FontFile" uid="uid://iyv1a1gvh5k7" path="res://fonts/PressStart2P.ttf" id="3_1fky4"]
+[ext_resource type="FontFile" uid="uid://iyv1a1gvh5k7" path="res://resources/fonts/PressStart2P.ttf" id="3_1fky4"]
 [ext_resource type="PackedScene" uid="uid://c8xg03cmhwws8" path="res://scenes/player.tscn" id="3_7p0di"]
 
 [sub_resource type="Theme" id="Theme_y265l"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bse5kexa1stc8"]
 
 [ext_resource type="Script" path="res://scripts/level_entrance.gd" id="1_opa8a"]
-[ext_resource type="Texture2D" uid="uid://c7afer7wtwnsq" path="res://images/arrow.png" id="2_ngmvk"]
+[ext_resource type="Texture2D" uid="uid://c7afer7wtwnsq" path="res://resources/images/arrow.png" id="2_ngmvk"]
 
 [node name="LevelEntrance" type="Node2D"]
 script = ExtResource("1_opa8a")

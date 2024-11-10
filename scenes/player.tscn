@@ -1,8 +1,8 @@
 [gd_scene load_steps=21 format=3 uid="uid://c8xg03cmhwws8"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_e81al"]
-[ext_resource type="Texture2D" uid="uid://bqk82fuc3jjis" path="res://images/prototype-player-v2.png" id="2_x2qng"]
-[ext_resource type="Texture2D" uid="uid://cljxakdhp3b0h" path="res://images/particle.png" id="3_cxnaa"]
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_e81al"]
+[ext_resource type="Texture2D" uid="uid://bqk82fuc3jjis" path="res://resources/images/prototype-player-v2.png" id="2_x2qng"]
+[ext_resource type="Texture2D" uid="uid://cljxakdhp3b0h" path="res://resources/images/particle.png" id="3_cxnaa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1s628"]
 atlas = ExtResource("2_x2qng")
@@ -166,5 +166,7 @@ amount = 25
 process_material = SubResource("ParticleProcessMaterial_qndvi")
 texture = ExtResource("3_cxnaa")
 lifetime = 0.5
+
+[node name="StateMachine" type="Node" parent="."]
 
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]

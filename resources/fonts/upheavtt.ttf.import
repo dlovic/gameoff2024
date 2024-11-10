@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://iyv1a1gvh5k7"
-path="res://.godot/imported/PressStart2P.ttf-5efcbd428e9d940ffb80085ffe21a152.fontdata"
+uid="uid://fn8bnymm1eup"
+path="res://.godot/imported/upheavtt.ttf-798eff55c4eeaae6ed798b3e3195cba3.fontdata"
 
 [deps]
 
-source_file="res://fonts/PressStart2P.ttf"
-dest_files=["res://.godot/imported/PressStart2P.ttf-5efcbd428e9d940ffb80085ffe21a152.fontdata"]
+source_file="res://resources/fonts/upheavtt.ttf"
+dest_files=["res://.godot/imported/upheavtt.ttf-798eff55c4eeaae6ed798b3e3195cba3.fontdata"]
 
 [params]
 

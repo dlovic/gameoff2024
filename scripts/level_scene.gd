@@ -22,9 +22,7 @@ func _ready() -> void:
 		player.position = entrances[direction].position
 		
 	# level change
-	if direction == LevelEntrance.Direction.Up and !is_start:
-		player.velocity.y = (player as Player).JUMP_VELOCITY
-	else:
+	if direction != LevelEntrance.Direction.Up and !is_start:
 		player.velocity = Vector2.ZERO
 	
 	(player.get_node("TrailParticles") as GPUParticles2D).restart()
