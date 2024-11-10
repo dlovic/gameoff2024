@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://hdbxkf7cb20k"]
+[gd_scene load_steps=12 format=4 uid="uid://hdbxkf7cb20k"]
 
 [ext_resource type="Script" path="res://scripts/level_scene.gd" id="1_qomye"]
 [ext_resource type="PackedScene" uid="uid://xggf6mewj22f" path="res://scenes/map.tscn" id="2_tngle"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://wvupx1h5owcc" path="res://images/terrain-tileset.png" id="4_57ibd"]
 [ext_resource type="Shader" path="res://shaders/game.gdshader" id="5_6gdgu"]
 [ext_resource type="Script" path="res://scripts/parallax_map.gd" id="6_id3yn"]
+[ext_resource type="PackedScene" uid="uid://bse5kexa1stc8" path="res://scenes/nodes/level_entrance.tscn" id="7_thayn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v0dr4"]
 texture = ExtResource("3_whyln")
@@ -161,3 +162,7 @@ script = ExtResource("6_id3yn")
 
 [node name="PlayerSpawnPosition" type="Node2D" parent="."]
 position = Vector2(98, 271)
+
+[node name="LevelEntrance" parent="." instance=ExtResource("7_thayn")]
+position = Vector2(16, 312)
+direction = 3

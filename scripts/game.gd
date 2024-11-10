@@ -1,3 +1,4 @@
+class_name Game
 extends Node2D
 
 @export_group("Generation settings")
@@ -10,6 +11,7 @@ extends Node2D
 var levels = {}
 
 var current_level: Vector2i = Vector2i(0,0)
+var last_level: Vector2i = current_level
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -104,6 +106,8 @@ func _physics_process(delta: float) -> void:
 			# Check if player is outside and print the direction
 			if outside_direction != "":
 				print("Player is outside the map on:", outside_direction, "at position:", player_position)
+				
+				last_level = current_level
 				
 				if outside_direction == "top":
 					current_level += Vector2i.UP

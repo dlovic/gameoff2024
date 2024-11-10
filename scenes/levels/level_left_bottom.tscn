@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://bmvyel4d486el"]
+[gd_scene load_steps=12 format=4 uid="uid://bmvyel4d486el"]
 
 [ext_resource type="Script" path="res://scripts/level_scene.gd" id="1_iuvjw"]
 [ext_resource type="PackedScene" uid="uid://xggf6mewj22f" path="res://scenes/map.tscn" id="2_y1e3m"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://wvupx1h5owcc" path="res://images/terrain-tileset.png" id="4_0a7vs"]
 [ext_resource type="Shader" path="res://shaders/game.gdshader" id="5_65ih4"]
 [ext_resource type="Script" path="res://scripts/parallax_map.gd" id="6_n6u52"]
+[ext_resource type="PackedScene" uid="uid://bse5kexa1stc8" path="res://scenes/nodes/level_entrance.tscn" id="7_5hr1a"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v0dr4"]
 texture = ExtResource("3_gmb4b")
@@ -159,5 +160,12 @@ tile_set = SubResource("TileSet_eraxu")
 collision_enabled = false
 script = ExtResource("6_n6u52")
 
+[node name="LevelEntrance" parent="." instance=ExtResource("7_5hr1a")]
+position = Vector2(264, 346)
+
+[node name="LevelEntrance2" parent="." instance=ExtResource("7_5hr1a")]
+position = Vector2(17, 312)
+direction = 3
+
 [node name="PlayerSpawnPosition" type="Node2D" parent="."]
-position = Vector2(98, 271)
+position = Vector2(424, 286)
